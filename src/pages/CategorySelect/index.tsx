@@ -21,7 +21,7 @@ interface ICategory {
 }
 
 interface ICategorySelectProps {
-  category: string;
+  category: ICategory;
   setCategory: (category: ICategory) => void;
   closeSelectCategory: () => void;
 }
@@ -31,26 +31,34 @@ export function CategorySelect({
   setCategory,
   closeSelectCategory
 }: ICategorySelectProps) {
+
+  function handleCategorySelect(category: ICategory) {
+    setCategory(category)
+  }
+
   return (
     <Container>
       <Header>
         <Title>Categoria</Title>
       </Header>
 
-      <CategoryList 
-      data={categories}
-      keyExtractor={item => item.key}
-      renderItem={({ item }) => (
-        <Category>
-          <Icon name={item.icon} />
-          <Name>{item.name}</Name>
-        </Category>
-      )}
-      ItemSeparatorComponent={() => <Divisor />}
+      <CategoryList
+        data={categories}
+        keyExtractor={item => item.key}
+        renderItem={({ item }) => (
+          <Category
+            onPress={() => handleCategorySelect(item)}
+            isActive={category.key === item.key}
+          >
+            <Icon name={item.icon} />
+            <Name>{item.name}</Name>
+          </Category>
+        )}
+        ItemSeparatorComponent={() => <Divisor />}
       />
 
       <Footer>
-        <Button title="Selecionar" />
+        <Button title="Selecionar" onPress={closeSelectCategory} />
       </Footer>
     </Container>
   );
