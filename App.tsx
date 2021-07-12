@@ -1,4 +1,5 @@
 import React from 'react';
+import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
 import {
@@ -23,9 +24,12 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={theme} >
-      <Register />
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme} >
+        <Register />
+      </ThemeProvider>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 }
 
