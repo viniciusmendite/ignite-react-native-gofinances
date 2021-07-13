@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useForm } from 'react-hook-form';
 import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -40,9 +41,20 @@ export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+  const dataKey = '@gofinances:transactions';
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    async function loadData() {
+      const data = await AsyncStorage.getItem(dataKey);
+      console.log(JSON.parse(data!))
+    }
+
+    loadData();
+  }, [])
 
   function handleTransactionTypeSelect(type: 'up' | 'down') {
     setTransactionType(type);
@@ -56,7 +68,7 @@ export function Register() {
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: IFormData) {
+  async function handleRegister(form: IFormData) {
     if (!transactionType)
       return Toast.show({
         type: 'error',
@@ -71,7 +83,24 @@ export function Register() {
         text2: 'Selecione a categoria',
       });
 
-    console.log(form)
+    const data = {
+      name: form.name,
+      amount: form.amount,
+      transactionType,
+      category: category.key
+    };
+
+    try {
+      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Aviso',
+        text2: 'Não foi possível salvar',
+      });
+    }
   }
 
   return (
