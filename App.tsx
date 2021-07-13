@@ -1,4 +1,7 @@
 import 'react-native-gesture-handler';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import React from 'react';
 import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components';
