@@ -92,3 +92,9 @@ export const TransactionList = styled(
       paddingBottom: Platform.OS === 'ios' ? getBottomSpace() : 20,
     }
   })``;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
