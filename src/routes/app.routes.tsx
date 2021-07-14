@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { Dashboard } from '../pages/Dashboard';
 import { Register } from '../pages/Register';
+import { Resume } from '../pages/Resume';
 import theme from '../global/styles/theme';
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -51,7 +52,7 @@ export function AppRoutes() {
       />
       <Screen
         name="Resumo"
-        component={Register}
+        component={Resume}
         options={{
           tabBarIcon: (({ size, color }) => (
             <MaterialIcons
