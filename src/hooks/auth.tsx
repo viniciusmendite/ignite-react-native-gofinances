@@ -31,12 +31,12 @@ function AuthProvider({ children }: IAuthProviderProps) {
 
   async function signInWithGoogle() {
     try {
-      const CLIENT_ID = '926136644273-l4oeqjgtjn5dhh4ifke3scqr9lmve9hk.apps.googleusercontent.com';
-      const REDIRECT_URI = 'https://auth.expo.io/@viniciusmendite/gofinances';
+      console.log(process.env.CLIENT_ID)
+      console.log(process.env.REDIRECT_URI)
       const RESPONSE_TYPE = 'token';
       const SCOPE = encodeURI('profile email');
 
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
       const { type, params } = await AuthSession.startAsync({ authUrl }) as IAuthorizationResponse;
 
@@ -50,6 +50,10 @@ function AuthProvider({ children }: IAuthProviderProps) {
           name: userInfo.given_name,
           photo: userInfo.picture
         });
+
+        console.log(process.env.CLIENT_ID)
+        console.log(process.env.REDIRECT_URI)
+        console.log(user)
       }
 
     } catch (err) {
