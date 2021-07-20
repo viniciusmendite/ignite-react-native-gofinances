@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
+import Toast from 'react-native-toast-message';
 
 import LogoSvg from '../../assets/logo.svg';
 import GoogleSvg from '../../assets/google.svg';
@@ -19,8 +20,20 @@ import {
 } from './styles';
 
 export function SignIn() {
-  const { user } = useAuth();
-  console.log(user);
+  const { signInWithGoogle } = useAuth();
+
+  async function handleSignInWithGoogle() {
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      console.log(err);
+      Toast.show({
+        type: 'error',
+        text1: 'Aviso',
+        text2: 'Não foi possível conectar a conta Google',
+      });
+    }
+  }
 
   return (
     <Container>
@@ -49,6 +62,7 @@ export function SignIn() {
           <SignInSocialButton
             title="Entrar com Google"
             svg={GoogleSvg}
+            onPress={handleSignInWithGoogle}
           />
           <SignInSocialButton
             title="Entrar com Apple"
