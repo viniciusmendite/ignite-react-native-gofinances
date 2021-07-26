@@ -18,6 +18,8 @@ interface IAuthContextData {
   user: IUser;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
+  signOut: () => Promise<void>;
+  userStorageLoading: boolean;
 }
 
 interface IAuthorizationResponse {
@@ -91,7 +93,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
           id: String(credential.user),
           email: credential.email!,
           name: credential.fullName!.givenName!,
-          photo: undefined
+          photo: `https://ui-avatars.com/api/?name=${user.name}&length=1`
         }
 
         setUser(userLogged);
@@ -102,8 +104,19 @@ function AuthProvider({ children }: IAuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    setUser({} as IUser);
+    await AsyncStorage.removeItem('@gofinances:user');
+  }
+
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+    <AuthContext.Provider value={{
+      user,
+      signInWithGoogle,
+      signInWithApple,
+      signOut,
+      userStorageLoading
+    }}>
       {children}
     </AuthContext.Provider>
   );

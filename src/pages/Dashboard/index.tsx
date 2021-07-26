@@ -24,6 +24,7 @@ import {
   LogoutButton,
   LoadContainer
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 export interface IDataListProps extends ITransactionCardProps {
   id: string;
@@ -46,6 +47,7 @@ export function Dashboard() {
   const [highlightData, setHighlightData] = useState<IHighlightData>({} as IHighlightData);
 
   const theme = useTheme();
+  const { user, signOut } = useAuth();
 
   function getLastTransactionDate(
     collection: IDataListProps[],
@@ -152,14 +154,14 @@ export function Dashboard() {
             <Header>
               <UserWrapper>
                 <UserInfo>
-                  <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/53957541?v=4' }} />
+                  <Photo source={{ uri: user.photo }} />
                   <User>
                     <UserGreeting>Olá,</UserGreeting>
-                    <UserName>Vinícius</UserName>
+                    <UserName>{user.name}</UserName>
                   </User>
                 </UserInfo>
 
-                <LogoutButton onPress={() => { }}>
+                <LogoutButton onPress={signOut}>
                   <Icon name="power" />
                 </LogoutButton>
               </UserWrapper>

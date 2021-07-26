@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Toast from 'react-native-toast-message';
+import { useTheme } from 'styled-components';
 
 import LogoSvg from '../../assets/logo.svg';
 import GoogleSvg from '../../assets/google.svg';
@@ -20,11 +22,15 @@ import {
 } from './styles';
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
   const { signInWithGoogle, signInWithApple } = useAuth();
+
+  const theme = useTheme();
 
   async function handleSignInWithGoogle() {
     try {
-      await signInWithGoogle();
+      setIsLoading(true);
+      return await signInWithGoogle();
     } catch (err) {
       console.log(err);
       Toast.show({
@@ -32,12 +38,15 @@ export function SignIn() {
         text1: 'Aviso',
         text2: 'Não foi possível conectar a conta Google',
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
   async function handleSignInWithApple() {
     try {
-      await signInWithApple();
+      setIsLoading(true);
+      return await signInWithApple();
     } catch (err) {
       console.log(err);
       Toast.show({
@@ -45,6 +54,8 @@ export function SignIn() {
         text1: 'Aviso',
         text2: 'Não foi possível conectar a conta Apple',
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -83,6 +94,8 @@ export function SignIn() {
             onPress={handleSignInWithApple}
           />
         </FooterWrapper>
+
+        {isLoading && <ActivityIndicator style={{ marginTop: 18 }} color={theme.colors.shape} size="large" />}
       </Footer>
     </Container>
   );
