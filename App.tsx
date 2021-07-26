@@ -7,7 +7,6 @@ import { StatusBar } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components';
 import AppLoading from 'expo-app-loading';
-import { NavigationContainer } from '@react-navigation/native';
 import {
   useFonts,
   Poppins_400Regular,
@@ -16,8 +15,7 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import theme from './src/global/styles/theme';
-// import { AppRoutes } from './src/routes/app.routes';
-import { SignIn } from './src/pages/SignIn';
+import { Routes } from './src/routes';
 import { AuthProvider } from './src/hooks/auth';
 
 export default function App() {
@@ -34,12 +32,10 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme} >
-        <NavigationContainer>
-          <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-          <AuthProvider>
-            <SignIn />
-          </AuthProvider>
-        </NavigationContainer>
+        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
       </ThemeProvider>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
