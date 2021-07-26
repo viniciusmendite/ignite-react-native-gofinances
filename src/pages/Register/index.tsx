@@ -22,6 +22,7 @@ import {
   Fields,
   TransactionsTypes
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface IFormData {
   name: string;
@@ -44,7 +45,8 @@ export function Register() {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   const navigation = useNavigation();
-  const dataKey = '@gofinances:transactions';
+  const { user } = useAuth();
+  const dataKey = `@gofinances:transactions_user:${user.id}`;
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),

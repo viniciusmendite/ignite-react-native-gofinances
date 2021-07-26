@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Toast from 'react-native-toast-message';
 import { useTheme } from 'styled-components';
@@ -38,7 +38,6 @@ export function SignIn() {
         text1: 'Aviso',
         text2: 'Não foi possível conectar a conta Google',
       });
-    } finally {
       setIsLoading(false);
     }
   }
@@ -54,7 +53,6 @@ export function SignIn() {
         text1: 'Aviso',
         text2: 'Não foi possível conectar a conta Apple',
       });
-    } finally {
       setIsLoading(false);
     }
   }
@@ -88,11 +86,13 @@ export function SignIn() {
             svg={GoogleSvg}
             onPress={handleSignInWithGoogle}
           />
-          <SignInSocialButton
-            title="Entrar com Apple"
-            svg={AppleSvg}
-            onPress={handleSignInWithApple}
-          />
+          {Platform.OS === 'ios' &&
+            <SignInSocialButton
+              title="Entrar com Apple"
+              svg={AppleSvg}
+              onPress={handleSignInWithApple}
+            />
+          }
         </FooterWrapper>
 
         {isLoading && <ActivityIndicator style={{ marginTop: 18 }} color={theme.colors.shape} size="large" />}
